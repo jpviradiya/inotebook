@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const router = express.Router(); 
-
+const { query } = require('express-validator');
 
 // Create a User using: POST "/api/auth/". Doesn't require Auth
 router.post('/', (req, res)=>{ 
