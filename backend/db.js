@@ -3,6 +3,6 @@ const mongoURI = "mongodb+srv://jeelviradiya188:YPLkMEGMsBWzJYfo@mongo-atlas.r3o
 
 const connectToMongo = async () => {
   await mongoose.connect(mongoURI)
-  console.log(mongoose.connection.readyState)
+  // console.log(mongoose.connection.readyState)
 }
 module.exports = connectToMongo
