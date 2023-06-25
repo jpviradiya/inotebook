@@ -6,6 +6,7 @@ const bcryptjs = require('bcryptjs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'jeelviradiya'
+const fetchuser = require('../middleware/fetchuser')
 
 // ROUTE 1: Create a User using: POST "/api/auth/createUser". Doesn't require Auth
 router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }), body('email', "Enter valid mail").isEmail(), body('password', "Password length should be between 5 to 10 character").isLength({ min: 5, max: 10 })], async (req, res) => {
@@ -35,13 +36,13 @@ router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }
       password: secPass
     })
     //fetch id from user
-    const data = {
+    const UserId = {
       user: {
         id: user.id
       }
     }
     //generate authentication token
-    const authToken = jwt.sign(data, JWT_SECRET)
+    const authToken = jwt.sign(UserId, JWT_SECRET)
     console.log(authToken)
 
     //return json
@@ -76,13 +77,13 @@ router.post('/login', [body('email', "Enter valid mail").isEmail(), body('passwo
     }
 
     //fetch id from user
-    const data = {
+    const UserId = {
       user: {
         id: user.id
       }
     }
     //generate authentication token
-    const authToken = jwt.sign(data, JWT_SECRET)
+    const authToken = jwt.sign(UserId, JWT_SECRET)
     console.log(authToken)
 
     //return json
@@ -96,5 +97,16 @@ router.post('/login', [body('email', "Enter valid mail").isEmail(), body('passwo
 })
 
 // ROUTE 3: Get user detail while loggedin using: POST "/api/auth/getuser" Login require  
+router.post('/getuser', fetchuser, async (req, res) => {
+  try {
 
+    const userId = req.user.id
+    const user = await User.findById(userId)
+    res.send(user)
+
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send("Internal server error")
+  }
+})
 module.exports = router
