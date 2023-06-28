@@ -28,6 +28,10 @@ function AddNote() {
 					<label htmlFor="description" className="form-label">Description</label>
 					<textarea className="form-control" id="description" name='description' rows={5} onChange={onChange}></textarea>
 				</div>
+				<div className="mb-3">
+					<label htmlFor="tag" className="form-label">Tag</label>
+					<input type="text" className="form-control" id="tag" name='tag' aria-describedby="emailHelp" onChange={onChange} />
+				</div>
 				<button type="submit" className="btn btn-primary" onClick={handleClick}>Add note</button>
 			</form>
 		</div>

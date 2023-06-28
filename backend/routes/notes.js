@@ -71,13 +71,7 @@ router.put('/update/:id', fetchuser, [body('title', 'Enter valid title').isLengt
 router.delete('/delete/:id', fetchuser, async (req, res) => {
 
     try {
-        //create an updateNote object which contain info about updated note
-        const updatedNote = {}
-        if (title) { updatedNote.title = title }
-        if (description) { updatedNote.description = description }
-        if (tag) { updatedNote.tag = tag }
-
-        //find note and then update it.
+        //find note and then delete it.
         let note = await Notes.findById(req.params.id)
         if (!note) { return res.status(404), send("not found") }
 

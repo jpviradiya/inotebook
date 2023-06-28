@@ -96,12 +96,12 @@ router.post('/login', [body('email', "Enter valid mail").isEmail(), body('passwo
 
 })
 
-// ROUTE 3: Get user detail while loggedin using: POST "/api/auth/getuser" Login require  
+// ROUTE 3: Get user detail while loggedin using: POST "/api/auth/getuser" Login require
 router.post('/getuser', fetchuser, async (req, res) => {
   try {
 
     const userId = req.user.id
-    const user = await User.findById(userId)
+    const user = await User.findById(userId).select("-password")
     res.send(user)
 
   } catch (error) {
