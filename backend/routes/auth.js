@@ -43,7 +43,6 @@ router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }
 		}
 		//generate authentication token
 		const authToken = jwt.sign(UserId, JWT_SECRET)
-		console.log(authToken)
 
 		//return json
 		success = true
