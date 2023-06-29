@@ -18,7 +18,7 @@ function NoteItem(props) {
 						<i className="fa fa-trash mx-2" style={{ color: '#000000' }} onClick={()=>{deleteNote(note._id)}}></i>
 					</div>
 					<p className="card-text">{note.description}</p>
-					<p className="card-text">{note.tag}</p>
+					{/* <p className="card-text">{note.tag}</p> */}
 				</div>
 			</div>
 		</div>

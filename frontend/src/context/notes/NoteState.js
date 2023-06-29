@@ -18,7 +18,8 @@ const NoteState = (props) => {
 				"auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5YmUyNzEyZTM1YTRmOTc0NWU5YTU1In0sImlhdCI6MTY4NzkzNzY0OX0.vqGk3Az2mJQIQQ6XH5HcCF4w4o0rQMzOCJFdEybUDhM"
 			}
 		});
-		setNotes(await response.json())
+		const allnote = await response.json()
+		setNotes(allnote)
 	}
 	// Add Note
 	const addNote = async (title, description, tag) => {
@@ -32,22 +33,16 @@ const NoteState = (props) => {
 			},
 			body: JSON.stringify({ title, description, tag }),
 		});
+
 		//note data
-		const note = {
-			"_id": "649be76e05e5a1912b253ed7",
-			"user": "649be2712e35a4f9745e9a55",
-			"title": title,
-			"description": description,
-			"tag": tag,
-			"date": "2023-06-25T12:49:17.938Z",
-			"__v": 0
-		}
+		const note = await response.json()
 		setNotes(notes.concat(note))
 	}
 
 	// Delete Note
 	const deleteNote = async (id) => {
 		// API call
+		// eslint-disable-next-line
 		const response = await fetch(`${host}/api/notes/delete/${id}`, {
 			method: "DELETE",
 			headers: {
@@ -62,6 +57,7 @@ const NoteState = (props) => {
 	// Edit Note
 	const editNote = async (id, title, description, tag) => {
 		// API call
+		// eslint-disable-next-line
 		const response = await fetch(`${host}/api/notes/update/${id}`, {
 			method: "PUT",
 			headers: {
@@ -71,15 +67,18 @@ const NoteState = (props) => {
 			body: JSON.stringify({ title, description, tag }),
 		});
 
+		let updatedNotes=JSON.parse(JSON.stringify(notes))
 		//change note for client
-		for (let index = 0; index < notes.length; index++) {
-			const element = notes[index];
+		for (let index = 0; index < updatedNotes.length; index++) {
+			const element = updatedNotes[index];
 			if (element._id === id) {
-				element.title = title
-				element.description = description
-				element.tag = tag
+				updatedNotes[index].title = title
+				updatedNotes[index].description = description
+				updatedNotes[index].tag = tag
+				break;
 			}
 		}
+		setNotes(updatedNotes)
 	}
 
 	return (

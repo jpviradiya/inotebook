@@ -16,7 +16,7 @@ router.get('/fetch', fetchuser, async (req, res) => {
 })
 
 //Route 2:Add notes for loggedin a User using: POST "/api/notes/addnote". Require login
-router.post('/addnote', fetchuser, [body('title', 'Enter valid title').isLength({ min: 5 }), body('description', "Description length should be between 20 to 200 character").isLength({ min: 20, max: 200 }), body('tag', 'Enter a valid tag').isLength({ min: 1 })], async (req, res) => {
+router.post('/addnote', fetchuser, [body('title', 'Enter valid title').isLength({ min: 5 }), body('description', "Description length should be at least 5 character").isLength({ min:5 })], async (req, res) => {
 
     try {
         const { title, description, tag } = req.body
@@ -40,7 +40,7 @@ router.post('/addnote', fetchuser, [body('title', 'Enter valid title').isLength(
 
 //Route 3: Update notes for loggedin a User using: PUT "/api/notes/update/:id". Require login
 //! here  is id of an perticular note of that loggedin user
-router.put('/update/:id', fetchuser, [body('title', 'Enter valid title').isLength({ min: 5 }), body('description', "Description length should be between 20 to 200 character").isLength({ min: 20, max: 200 }), body('tag', 'Enter a valid tag').isLength({ min: 1 })], async (req, res) => {
+router.put('/update/:id', fetchuser, [body('title', 'Enter valid title').isLength({ min: 5 }), body('description', "Description length should be at least 5 character").isLength({ min:5 })], async (req, res) => {
     try {
         //create an updateNote object which contain info about updated note
         const { title, description, tag } = req.body
