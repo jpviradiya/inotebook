@@ -3,7 +3,7 @@ import noteContext from '../context/notes/noteContext'
 
 
 function NoteItem(props) {
-	const { note,updateNote } = props;
+	const { note,updateNote,showAlert } = props;
 
 	const context = useContext(noteContext)
 	const { deleteNote } = context
@@ -15,10 +15,10 @@ function NoteItem(props) {
 					<div className="d-flex align-items-center">
 						<h5 className="card-title">{note.title}</h5>
 						<i className="fa fa-pen-to-square mx-2" style={{ color: '#000000' }} onClick={()=>{updateNote(note)}}></i>
-						<i className="fa fa-trash mx-2" style={{ color: '#000000' }} onClick={()=>{deleteNote(note._id)}}></i>
+						<i className="fa fa-trash mx-2" style={{ color: '#000000' }} onClick={()=>{deleteNote(note._id);showAlert("Note Deleted Sucessfully","success")
+							}}></i>
 					</div>
 					<p className="card-text">{note.description}</p>
-					{/* <p className="card-text">{note.tag}</p> */}
 				</div>
 			</div>
 		</div>
