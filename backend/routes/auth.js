@@ -10,19 +10,19 @@ const fetchuser = require('../middleware/fetchuser')
 
 // ROUTE 1: Create a User using: POST "/api/auth/createUser". Doesn't require Auth
 router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }), body('email', "Enter valid mail").isEmail(), body('password', "Password length should be between 5 to 10 character").isLength({ min: 5, max: 10 })], async (req, res) => {
-	console.log(req.body);
+	let success = false
 
 	//Check validation
 	const error = validationResult(req);
 	if (!error.isEmpty()) {
-		return res.status(400).json({ errors: error.array() });
+		return res.status(400).json({ success, errors: error.array() });
 	}
 
 	try {
 		//create user in collection in the form of document is email doesn't exists
 		let user = await User.findOne({ email: req.body.email })
 		if (user) {
-			return res.status(400).json({ errors: "This Email is already exists" });
+			return res.status(400).json({ success, errors: "This Email is already exists" });
 		}
 
 		// generate password hash value
@@ -46,7 +46,8 @@ router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }
 		console.log(authToken)
 
 		//return json
-		res.json({ "Done": "User created successfully", "UserInfo": user, "authToken": authToken })
+		success = true
+		res.json({ success:success, "Done": "User created successfully", "UserInfo": user, "authToken": authToken })
 
 	} catch (error) {
 		console.error(error.message)
@@ -57,7 +58,7 @@ router.post('/createUser', [body('name', 'Enter valid name').isLength({ min: 3 }
 
 // ROUTE 2: Login a User using: POST "/api/auth/login". Doesn't require Auth
 router.post('/login', [body('email', "Enter valid mail").isEmail(), body('password', "password should not be blank").exists()], async (req, res) => {
-	let success=false
+	let success = false
 
 	//Check validation
 	const error = validationResult(req);
@@ -70,7 +71,7 @@ router.post('/login', [body('email', "Enter valid mail").isEmail(), body('passwo
 		//create user in collection in the form of document is email doesn't exists
 		let user = await User.findOne({ email: email })
 		if (!user) {
-			success=false
+			success = false
 			return res.status(400).json({ error: "Please try to login with correct credentials" });
 		}
 		const passwordCompare = await bcrypt.compare(password, user.password)
